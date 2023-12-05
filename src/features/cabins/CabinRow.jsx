@@ -23,7 +23,7 @@ const Img = styled.img`
   aspect-ratio: 3 / 2;
   object-fit: cover;
   object-position: center;
-  transform: scale(1.5) translateX(-7px);
+  transform: scale(1.5) translateX(-5px);
 `;
 
 const Cabin = styled.div`
@@ -58,19 +58,17 @@ export default function CabinRow({ cabin }) {
   const queryClient = useQueryClient();
 
   const { isLoading: isDeleting, mutate } = useMutation({
-    mutationFn: (id) => {
-      toast.success("Cabin successfully deleted");
-      deleteCabin(id);
-    },
+    mutationFn: deleteCabin,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cabins"] });
+      toast.success("Cabin successfully deleted");
     },
     onError: (err) => toast.error(err.message),
   });
 
   return (
     <TableRow>
-      <img src={image} alt={description} />
+      <Img src={image} alt={description} />
       <Cabin>{name}</Cabin>
       <div>Fits up to {maxCapacity} guests</div>
       <Price>{formatCurrency(regularPrice)}</Price>
