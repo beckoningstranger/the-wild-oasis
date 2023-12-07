@@ -11,11 +11,11 @@ import Input from "../../ui/Input";
 import useCreateCabin from "./useCreateCabin";
 import useEditCabin from "./useEditCabin";
 
-function CreateCabinForm({ cabinToEdit = {} }) {
+function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const { id: editId, ...editValues } = cabinToEdit;
   const isEditSession = Boolean(editId);
 
-  const { register, handleSubmit, getValues, reset, formState } = useForm({
+  const { register, handleSubmit, getValues, formState } = useForm({
     defaultValues: isEditSession ? editValues : {},
   });
   const { errors } = formState;
@@ -32,9 +32,8 @@ function CreateCabinForm({ cabinToEdit = {} }) {
       editCabin(
         { newCabinData: { ...data, image }, id: editId },
         {
-          onSuccess: (data) => {
-            reset();
-            console.log(data);
+          onSuccess: () => {
+            onCloseModal?.();
           },
         }
       );
@@ -42,9 +41,8 @@ function CreateCabinForm({ cabinToEdit = {} }) {
       createCabin(
         { ...data, image: image },
         {
-          onSuccess: (data) => {
-            reset();
-            console.log(data);
+          onSuccess: () => {
+            onCloseModal?.();
           },
         }
       );
@@ -56,7 +54,10 @@ function CreateCabinForm({ cabinToEdit = {} }) {
   }
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit, onError)}>
+    <Form
+      onSubmit={handleSubmit(onSubmit, onError)}
+      type={onCloseModal ? "modal" : "regular"}
+    >
       <FormRow label={"Cabin name"} error={errors?.name?.message}>
         <Input
           type="text"
@@ -66,7 +67,6 @@ function CreateCabinForm({ cabinToEdit = {} }) {
           })}
         />
       </FormRow>
-
       <FormRow label={"Maximum Capacity"} error={errors?.maxCapacity?.message}>
         <Input
           type="number"
@@ -77,7 +77,6 @@ function CreateCabinForm({ cabinToEdit = {} }) {
           })}
         />
       </FormRow>
-
       <FormRow label={"Regular Price"} error={errors?.regularPrice?.message}>
         <Input
           type="number"
@@ -88,7 +87,6 @@ function CreateCabinForm({ cabinToEdit = {} }) {
           })}
         />
       </FormRow>
-
       <FormRow label={"Discount"} error={errors?.discount?.message}>
         <Input
           type="number"
@@ -102,7 +100,6 @@ function CreateCabinForm({ cabinToEdit = {} }) {
           })}
         />
       </FormRow>
-
       <FormRow
         label={"Description for website"}
         error={errors?.description?.message}
@@ -116,7 +113,6 @@ function CreateCabinForm({ cabinToEdit = {} }) {
           })}
         />
       </FormRow>
-
       <FormRow label={"Cabin Photo"}>
         <FileInput
           id="image"
@@ -127,11 +123,14 @@ function CreateCabinForm({ cabinToEdit = {} }) {
           })}
         />
       </FormRow>
-
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
-          Reset Form
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => onCloseModal?.()}
+        >
+          Cancel
         </Button>
         <Button disabled={isBusy}>
           {isEditSession ? "Update Cabin" : "Add cabin"}
