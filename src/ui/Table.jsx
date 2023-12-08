@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { createContext, useContext } from "react";
 import styled from "styled-components";
 
@@ -74,7 +75,7 @@ function Header({ children }) {
   const { columns } = useContext(TableContext);
 
   return (
-    <StyledHeader role="row" $columns={columns}>
+    <StyledHeader role="row" $columns={columns} as="header">
       {children}
     </StyledHeader>
   );
@@ -88,8 +89,9 @@ function Row({ children }) {
     </StyledRow>
   );
 }
-function Body({ children }) {
-  const {} = useContext(TableContext);
+function Body({ data, render }) {
+  if (!data.length) return <Empty>No data to show at the moment! :-/</Empty>;
+  return <StyledBody>{data.map(render)}</StyledBody>;
 }
 
 Table.Header = Header;
