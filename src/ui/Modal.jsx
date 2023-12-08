@@ -1,14 +1,9 @@
 /* eslint-disable react/prop-types */
-import {
-  createContext,
-  useState,
-  useContext,
-  createElement,
-  cloneElement,
-} from "react";
+import { createContext, useState, useContext, createElement } from "react";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
+import useOutsideClick from "../hooks/useOutsideClick";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -86,13 +81,13 @@ function Open({ children, opens: opensWindowName }) {
 export function Window({ children, name }) {
   const { openWindowName, close } = useContext(ModalContext);
 
-  if (name !== openWindowName) return null;
+  const ref = useOutsideClick(close);
 
-  console.log(children);
+  if (name !== openWindowName) return null;
 
   return createPortal(
     <Overlay>
-      <StyledModal>
+      <StyledModal ref={ref}>
         <Button onClick={close}>
           <HiXMark />
         </Button>
