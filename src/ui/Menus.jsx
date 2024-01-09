@@ -33,12 +33,14 @@ const StyledToggle = styled.button`
 const StyledList = styled.ul`
   position: absolute;
 
+  width: 180px;
   background-color: var(--color-grey-0);
   box-shadow: var(--shadow-md);
   border-radius: var(--border-radius-md);
 
-  right: 32px;
+  right: 20px;
   top: -40px;
+  z-index: 5;
 `;
 
 const StyledButton = styled.button`
