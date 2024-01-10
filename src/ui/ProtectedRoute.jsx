@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../features/authentication/useUser";
 import Spinner from "./Spinner";
 import styled from "styled-components";
+import { useEffect } from "react";
 
 const FullPage = styled.div`
   height: 100vh;
@@ -19,7 +20,15 @@ export default function ProtectedRoute({ children }) {
 
   const { isLoading, isAuthenticated } = useUser();
 
-  // 2. While loading, show a spinner
+  // 2. If there is NO authenticated user, redirect back to login page
+
+  useEffect(() => {
+    if (!isAuthenticated && !isLoading) {
+      navigate("/login");
+    }
+  }, [isAuthenticated, isLoading, navigate]);
+
+  // 3. While loading, show a spinner
 
   if (isLoading)
     return (
@@ -27,13 +36,6 @@ export default function ProtectedRoute({ children }) {
         <Spinner />
       </FullPage>
     );
-
-  // 3. If there is NO authenticated user, redirect back to login page
-
-  if (!isAuthenticated && !isLoading) {
-    navigate("/login");
-    return;
-  }
 
   // 4. If there is an authenticated user, render the app
   if (isAuthenticated) return children;
