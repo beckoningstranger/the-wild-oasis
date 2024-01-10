@@ -27,7 +27,7 @@ function ConfirmDelete({ resourceName, onConfirm, disabled, onCloseModal }) {
       <Heading as="h3">Delete {resourceName}</Heading>
       <p>
         Are you sure you want to{" "}
-        <strong>delete Cabin {resourceName} permanently? </strong>
+        <strong>delete {resourceName} permanently? </strong>
         This action cannot be undone.
       </p>
 

@@ -107,7 +107,7 @@ export default function CabinRow({ cabin }) {
             </Modal.Window>
             <Modal.Window name="delete">
               <ConfirmDelete
-                resourceName={name}
+                resourceName="cabin"
                 onConfirm={() => deleteCabin(cabinId)}
                 disabled={isBusy}
               />
