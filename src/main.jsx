@@ -17,6 +17,7 @@ import PageNotFound from "./pages/PageNotFound";
 import GlobalStyles from "./styles/GlobalStyles.js";
 import Booking from "./pages/Booking.jsx";
 import CheckIn from "./pages/CheckIn.jsx";
+import ProtectedRoute from "./ui/ProtectedRoute.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,7 +35,13 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <GlobalStyles />
       <BrowserRouter>
         <Routes>
-          <Route element={<App />}>
+          <Route
+            element={
+              <ProtectedRoute>
+                <App />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Navigate replace to="dashboard" />} />
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="bookings" element={<Bookings />} />
