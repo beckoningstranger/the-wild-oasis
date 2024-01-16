@@ -2,6 +2,8 @@ import { Outlet } from "react-router-dom";
 import Sidebar from "./ui/Sidebar";
 import Header from "./ui/Header";
 import styled from "styled-components";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "./ui/ErrorFallback";
 
 const Main = styled.main`
   background-color: var(--color-grey-50);
@@ -26,14 +28,19 @@ const Container = styled.div`
 
 export default function App() {
   return (
-    <StyledApp>
-      <Header />
-      <Sidebar />
-      <Main>
-        <Container>
-          <Outlet />
-        </Container>
-      </Main>
-    </StyledApp>
+    <ErrorBoundary
+      FallbackComponent={ErrorFallback}
+      onReset={() => window.location.replace("/")}
+    >
+      <StyledApp>
+        <Header />
+        <Sidebar />
+        <Main>
+          <Container>
+            <Outlet />
+          </Container>
+        </Main>
+      </StyledApp>
+    </ErrorBoundary>
   );
 }
